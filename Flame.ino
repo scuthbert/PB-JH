@@ -1,26 +1,18 @@
-int prevR, prevG, prevB = 0;
+int currentR, currentG, currentB, currentW = 0;
+int baseR = 230, baseG = 65, baseB = 10;
 
 void Flame() {
-  // Flicker, based on our initial RGB values
-  for(int i=0; i<strip.numPixels()-1; i++) {
+  // Move all the pixels 'down' by one to scan the random colors across the matrix
+  for (int i=0; i<strip.numPixels()-1; i++) {
     strip.setPixelColor(i, strip.getPixelColor(i+1));
   }
+  float brightness = rKnob/255;
 
-  // Regular (orange) flame:
-  int r = 255, g = 75, b = 10;
+  // For the last pixel, avg the current color with our 'base' color and flicker a random amount from that value
+  currentR = (((currentR + baseR) / 2.0) - random(0, 70))*brightness;
+  currentG = (((currentG + baseG) / 2.0) - random(0, 30))*brightness;
+  currentB = (((currentB + baseB) / 2.0) - random(0, 5))*brightness;
+  currentW = (random(1, 20)); // Pure random white seems to look "flickery" enough
 
-  int flickerR = random(0,75);
-  int flickerG = random(0,20);
-  int flickerB = random(0,5);
-
-  int r1 = (prevR+r)/1.5;
-  int g1 = (prevG+g)/1.5;
-  int b1 = (prevB+b)/1.5;
-  int w1 = max(max(r1, g1), b1)-100;
-
-  prevR = (r1-flickerR)*0.5;
-  prevG = (g1-flickerG)*0.5;
-  prevB = (b1-flickerB)*0.5;
-
-  strip.setPixelColor(strip.numPixels()-1, r1, g1, b1, w1);
+  strip.setPixelColor(strip.numPixels()-1, currentR, currentG, currentB, currentW);
 }

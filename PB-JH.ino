@@ -11,16 +11,17 @@
 #define G_POT A3
 #define B_POT A4
 #define LIGHT_LEVEL A5
-#define MAX_BRIGHTNESS 75 // Safety measure - when we turned it up to 100% the expoy cracked in ~15mins 🥴
+#define MAX_BRIGHTNESS 75 // 0-255; WARNING: Safety measure - when we turned it up to 100% (255) the expoy cracked in ~15mins 🥴 Risk of further cracking if it gets above 150 degrees. Possible fire hazard, do not adjust without measuring heat output over time. 
 
 // To add a new mode, copy+rename one of the existing files and add your new method below
-#define STATE_LENGTH 5
+#define STATE_LENGTH 6
 void RGBWKnobs();
 void RGBKnobs();
+void WKnobs();
 void Rainbow();
 void FlowyRainbow();
 void Flame();
-void (*states[STATE_LENGTH])() = { RGBWKnobs, RGBKnobs, Rainbow, FlowyRainbow, Flame };
+void (*states[STATE_LENGTH])() = { RGBWKnobs, RGBKnobs, WKnobs, Rainbow, FlowyRainbow, Flame };
 
 Adafruit_NeoPixel strip(64, MATRIX_PIN, NEO_GRBW);
 int stateCount, switchUp, switchDown, lastDebounceTime = 0;
